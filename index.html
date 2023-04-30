@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <title>Student Registration</title>
+  </head>
+  <body>
+    <h1 class="text-center">STUDENT REGISTRATION</h1>
+    <br />
+
+    <div class="container">
+      <form>
+        <div class="mb-3">
+          <label for="StudentNumber" class="form-label">Student No.:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="Rollbox"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="FirstName" class="form-label">First Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="Firstnamebox"
+          />
+        
+        </div>
+        <div class="mb-3">
+            <label for="MiddleName" class="form-label">Middle Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="Middlenamebox"
+            />
+            
+          </div>
+
+          <div class="mb-3">
+            <label for="LastName" class="form-label">Last Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="Lastnamebox"
+            />
+            
+          </div>
+
+          <div class="mb-3">
+            <label for="EmailAddress" class="form-label">Email Address:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="Emailbox"
+            />
+            
+          </div>
+
+          <div class="mb-3">
+            <label for="HomeAddress" class="form-label">Address:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="Addressbox"
+            />
+            
+          </div>
+
+          <div class="mb-3">
+            <label for="Mobilenumber" class="form-label">Mobile No.:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="Mobilenobox"
+            />
+            
+          </div>
+
+          <div class="mb-3">
+            <label for="Psswrd" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="Passwordbox">
+            
+          </div>
+          <br>
+          <button type="button" class="btn btn-primary" id="Insbtn">INSERT</button>
+          <button type="button" class="btn btn-primary" id="Selbtn">SELECT</button>
+          <button type="button" class="btn btn-primary" id="Updbtn">UPDATE</button>
+          <button type="button" class="btn btn-primary" id="Delbtn">DELETE</button>
+        </div>
+       
+      </form>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyClvuE-534G6hG1uTRPOBHfurvgPEFqbYw",
+        authDomain: "crud-7e791.firebaseapp.com",
+        databaseURL: "https://crud-7e791-default-rtdb.firebaseio.com",
+        projectId: "crud-7e791",
+        storageBucket: "crud-7e791.appspot.com",
+        messagingSenderId: "460318237526",
+        appId: "1:460318237526:web:98278a3ff9c25991ae6cf7"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+      import {getDatabase, ref, set, child, update, remove, get}
+        from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js"
+
+        const db = getDatabase();
+
+        // references
+
+        var rollbox = document.getElementById("Rollbox");
+        var firstnamebox = document.getElementById("Firstnamebox");
+        var middlenamebox = document.getElementById("Middlenamebox");
+        var lastnamebox = document.getElementById("Lastnamebox");
+        var emailbox = document.getElementById("Emailbox");
+        var addressbox = document.getElementById("Addressbox");
+        var mobilenobox = document.getElementById("Mobilenobox");
+        var passwordbox = document.getElementById("Passwordbox");
+
+        var insBtn = document.getElementById("Insbtn")
+        var selBtn = document.getElementById("Selbtn")
+        var updBtn = document.getElementById("Updbtn")
+        var delBtn = document.getElementById("Delbtn")
+
+         // add data function
+
+         function InsertData(){
+            set(ref(db, "StudentsRegistered/"+ rollbox.value),{
+                Rollbox: rollbox.value,
+                FistaName: firstnamebox.value,
+                MiddleName: middlenamebox.value,
+                LastName: lastnamebox.value,
+                Email: emailbox.value,
+                HomeAdd: addressbox.value,
+                MobileNo: mobilenobox.value,
+                Password: passwordbox.value
+            })
+            .then(()=>{
+                alert("Data Registered Successfully");
+            })
+            .catch((error)=>{
+                alert("Unsuccessful Registration, Error" + error)
+            });
+        }
+
+        // select data function
+
+        function SelectData(){
+          const dbref = ref(db);
+      
+          get(child(dbref, "StudentsRegistered/"+ rollbox.value)).then((snapshot)=>{
+              if (snapshot.exists ()){
+                    rollbox.value = snapshot.val().Rollbox;
+                    firstnamebox.value = snapshot.val().FistaName;
+                    middlenamebox.value = snapshot.val().MiddleName;
+                    lastnamebox.value = snapshot.val().LastName;
+                    emailbox.value = snapshot.val().Email;
+                    addressbox.value = snapshot.val().HomeAdd;
+                    mobilenobox.value = snapshot.val().MobileNo;
+                    passwordbox.value = snapshot.val().Password;
+      
+              }
+              else{
+                  alert("No Data Found")
+              }
+          })
+          .catch((error)=>{
+              alert("Unsuccessful, Error"+ error);
+          });
+      }
+
+      // update data function
+
+      function UpdateData(){
+            update(ref(db, "StudentsRegistered/"+ rollbox.value),{
+                Rollbox: rollbox.value,
+                FistaName: firstnamebox.value,
+                MiddleName: middlenamebox.value,
+                LastName: lastnamebox.value,
+                Email: emailbox.value,
+                HomeAdd: addressbox.value,
+                MobileNo: mobilenobox.value,
+                Password: passwordbox.value
+            })
+            .then(()=>{
+                alert("Data Updated Successfully");
+            })
+            .catch((error)=>{
+                alert("Unsuccessful, Error" + error)
+            });
+        }
+
+        // delete function
+
+        function DeleteData(){
+          remove(ref(db, "StudentsRegistered/"+ rollbox.value))
+          .then(()=>{
+              alert("Data Removed Successfully");
+          })
+          .catch((error)=>{
+              alert("Unsuccessful, Error"+ error);
+          });
+      }
+
+       // Assign event button
+        insBtn.addEventListener('click', InsertData);
+        selBtn.addEventListener('click', SelectData);
+        updBtn.addEventListener('click', UpdateData);
+        delBtn.addEventListener('click', DeleteData);
+    </script>
+  </body>
+</html>
